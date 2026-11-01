@@ -6,13 +6,17 @@ import (
 	"runtime"
 )
 
-// ConfigDir returns ~/.config/aether.
+// AppDirName names Aether Plasma's config, cache and data folders. It differs
+// from stock Aether ("aether") so both can be installed side by side.
+const AppDirName = "aether-plasma"
+
+// ConfigDir returns ~/.config/aether-plasma.
 func ConfigDir() string {
 	dir, err := os.UserConfigDir()
 	if err != nil {
 		dir = filepath.Join(homeDir(), ".config")
 	}
-	return filepath.Join(dir, "aether")
+	return filepath.Join(dir, AppDirName)
 }
 
 // CacheDir returns ~/.cache/aether.
@@ -21,7 +25,7 @@ func CacheDir() string {
 	if err != nil {
 		dir = filepath.Join(homeDir(), ".cache")
 	}
-	return filepath.Join(dir, "aether")
+	return filepath.Join(dir, AppDirName)
 }
 
 // DataDir returns the platform-specific data directory for Aether.
@@ -29,16 +33,16 @@ func CacheDir() string {
 // macOS: ~/Library/Application Support/aether (via os.UserConfigDir)
 func DataDir() string {
 	if xdg := os.Getenv("XDG_DATA_HOME"); xdg != "" {
-		return filepath.Join(xdg, "aether")
+		return filepath.Join(xdg, AppDirName)
 	}
 	if runtime.GOOS == "darwin" {
 		// macOS: use ~/Library/Application Support
 		dir, err := os.UserConfigDir()
 		if err == nil {
-			return filepath.Join(dir, "aether", "data")
+			return filepath.Join(dir, AppDirName, "data")
 		}
 	}
-	return filepath.Join(homeDir(), ".local", "share", "aether")
+	return filepath.Join(homeDir(), ".local", "share", AppDirName)
 }
 
 // ThemeDir returns ~/.config/aether/theme.

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Aether Plasma
+GenericName=Theme Generator
+Comment=Theme KDE Plasma from your wallpaper
+Exec=aether-plasma
+Icon=aether-plasma
+Terminal=false
+Type=Application
+Categories=Qt;KDE;Settings;DesktopSettings;Utility;
+Keywords=theme;color;plasma;kde;wallpaper;palette;konsole;ghostty;
+StartupNotify=true
+StartupWMClass=aether-plasma

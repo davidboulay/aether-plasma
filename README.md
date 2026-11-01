@@ -1,10 +1,69 @@
-
-
 <p align="center">
-  <img src="icon.png" alt="Aether Icon" width="256" height="256">
+  <img src="icon.png" alt="Aether Plasma Icon" width="256" height="256">
 </p>
 
-https://github.com/user-attachments/assets/58bb3de6-d425-4f8e-a01c-79da7a26a9f0
+# Aether Plasma
+
+A fork of [Aether](https://github.com/omacom/aether) by Bjarne Øverli for **KDE Plasma** (built and tested on CachyOS, Plasma 6, Wayland). Pick a wallpaper, extract a palette, press Apply, and Plasma follows: color scheme, wallpaper, lock screen, and your terminals.
+
+## What Apply does on Plasma
+
+| Target | How | Always / toggle |
+|---|---|---|
+| Plasma color scheme | Generates `Aether Plasma` (`~/.local/share/color-schemes/AetherPlasmaA/B.colors`) and activates it with `plasma-apply-colorscheme`. GTK apps follow through Plasma's own GTK sync. | Always |
+| Wallpaper | `plasma-apply-wallpaperimage` (all desktops) | Always |
+| Lock screen | Same image in `kscreenlockerrc` | Always |
+| Icons | Switches to the selected icon theme with `plasma-changeicons`, only if it is installed | Icons toggle |
+| Konsole | `AetherPlasma.colorscheme` set on the default profile (creates an `Aether Plasma` profile if there is none) | Konsole toggle |
+| Ghostty | Managed `config-file` include, live reload via SIGUSR2 | Ghostty toggle |
+| Alacritty | Managed `general.import`, live reload | Alacritty toggle |
+| Kitty | Managed `include`, reload via SIGUSR1 | Kitty toggle |
+| Foot | Managed `include=` | Foot toggle |
+| btop | `~/.config/btop/themes/aether-plasma.theme` + `color_theme`, reload via SIGUSR2 | Btop toggle |
+| VS Code, Zed, Neovim | Upstream Aether integrations | Toggles |
+
+Apps that are not installed are skipped. Hyprland-only targets (Hyprland, Hyprlock, Waybar, Walker, Mako, SwayOSD, Wofi) are hidden in the UI.
+
+**Layered, not invasive.** Aether Plasma only writes its own files plus a marked block in app configs:
+
+```
+# >>> aether-plasma (managed block, do not edit) >>>
+config-file = ?"/home/you/.config/aether-plasma/theme/ghostty.conf"
+# <<< aether-plasma <<<
+```
+
+The first time it changes one of your files it keeps a copy next to it (`<file>.before-aether-plasma`). Delete the block to opt out. **Clear theme** restores the color scheme you had before.
+
+It uses its own folders (`~/.config/aether-plasma`, `~/.cache/aether-plasma`, `~/.local/share/aether-plasma`) and binary (`aether-plasma`), so it can sit next to stock Aether.
+
+Set `AETHER_PLASMA=0` to disable Plasma activation (files are still generated) or `AETHER_PLASMA=1` to force it outside a detected Plasma session.
+
+## Install (from source, user-local)
+
+```bash
+sudo pacman -S --needed go webkit2gtk-4.1 nodejs npm
+go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0
+git clone https://github.com/davidboulay/aether-plasma.git
+cd aether-plasma && make install   # → ~/.local/bin/aether-plasma + app launcher entry
+```
+
+`make update` pulls and reinstalls; `make uninstall` removes it.
+
+## CLI
+
+```bash
+aether-plasma --generate ~/Pictures/wall.jpg            # extract + apply to Plasma
+aether-plasma --generate ~/Pictures/wall.jpg --light-mode
+aether-plasma --generate ~/Pictures/wall.jpg --no-apply --output /tmp/theme
+```
+
+## Credits
+
+All the palette, editor and wallpaper work is upstream Aether (MIT). This fork adds the Plasma backend (`internal/plasma`), the `kde.colors` and `konsole.colorscheme` templates, and the renaming.
+
+---
+
+The upstream README follows.
 
 # Aether
 

@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-const latestReleaseURL = "https://api.github.com/repos/omacom/aether/releases/latest"
+const latestReleaseURL = "https://api.github.com/repos/davidboulay/aether-plasma/releases/latest"
 
 // Release describes the newest published Aether release and its relation to
 // the version currently running.

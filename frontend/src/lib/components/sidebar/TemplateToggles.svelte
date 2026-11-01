@@ -4,11 +4,7 @@
         isAppIncluded,
         toggleAppInclusion,
     } from '$lib/stores/settings.svelte';
-    import {
-        SPECIAL_APP_KEYS,
-        ALWAYS_INCLUDED_APPS,
-        appLabel,
-    } from '$lib/constants/apps';
+    import {SPECIAL_APP_KEYS, isHiddenApp, appLabel} from '$lib/constants/apps';
     import ExpandableSection from '$lib/components/shared/ExpandableSection.svelte';
     import Switch from '$lib/components/shared/Switch.svelte';
 
@@ -33,7 +29,7 @@
                 .filter(
                     k =>
                         !SPECIAL_APP_KEYS.has(k) &&
-                        !ALWAYS_INCLUDED_APPS.has(k) &&
+                        !isHiddenApp(k) &&
                         k !== 'icons'
                 )
                 .sort();

@@ -51,7 +51,7 @@ func TestActivateThemeUsesPublicCLIAndExplicitBackground(t *testing.T) {
 		}
 	}
 
-	previous, err := os.ReadFile(filepath.Join(home, ".config", "aether", "previous-omarchy-theme"))
+	previous, err := os.ReadFile(filepath.Join(home, ".config", "aether-plasma", "previous-omarchy-theme"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -314,7 +314,7 @@ fi
 	if err == nil || !strings.Contains(err.Error(), "activation failed") || !strings.Contains(err.Error(), "restore previous background: background restore failed") {
 		t.Fatalf("ActivateTheme() error = %v, want activation and rollback errors", err)
 	}
-	snapshots, globErr := filepath.Glob(filepath.Join(home, ".local", "share", "aether", "background-recovery", "*", "old.png"))
+	snapshots, globErr := filepath.Glob(filepath.Join(home, ".local", "share", "aether-plasma", "background-recovery", "*", "old.png"))
 	if globErr != nil || len(snapshots) != 1 || !strings.Contains(err.Error(), snapshots[0]) {
 		t.Fatalf("rollback error does not identify a retained snapshot: %v, %v, %v", err, snapshots, globErr)
 	}
@@ -387,7 +387,7 @@ func TestActivateThemeCleansUnusedSnapshots(t *testing.T) {
 			if installFails && !os.IsPermission(err) || !installFails && err != nil {
 				t.Fatalf("unexpected activation error: %v", err)
 			}
-			entries, err := os.ReadDir(filepath.Join(home, "data", "aether", "background-recovery"))
+			entries, err := os.ReadDir(filepath.Join(home, "data", "aether-plasma", "background-recovery"))
 			if err != nil || len(entries) != 0 {
 				t.Fatalf("unused snapshots were not cleaned up: %v, %v", entries, err)
 			}
@@ -453,7 +453,7 @@ fi
 	if data, err := os.ReadFile(selected); err != nil || string(data) != "old wallpaper\n" {
 		t.Fatalf("later cleanup removed the retained recovery copy: %q, %v", data, err)
 	}
-	entries, err := os.ReadDir(filepath.Join(home, "data", "aether", "background-recovery"))
+	entries, err := os.ReadDir(filepath.Join(home, "data", "aether-plasma", "background-recovery"))
 	if err != nil || len(entries) != 1 {
 		t.Fatalf("expected only the retained recovery snapshot: %v, %v", entries, err)
 	}

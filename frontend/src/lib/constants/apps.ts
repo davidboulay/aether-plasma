@@ -17,7 +17,24 @@ export const SPECIAL_APP_ORDER: readonly string[] = ['neovim', 'zed', 'vscode'];
 // the Apps sidebar and the Targets strip. colors.toml is the canonical
 // machine-readable export consumed by external tools, so opting out of it
 // would silently break integrations.
-export const ALWAYS_INCLUDED_APPS = new Set(['colors']);
+export const ALWAYS_INCLUDED_APPS = new Set(['colors', 'kde']);
+
+// Aether Plasma: targets for the Hyprland/Omarchy stack, which a KDE Plasma
+// session doesn't run. Hidden from the Apps sidebar and the Targets strip.
+export const PLASMA_HIDDEN_APPS = new Set([
+    'hyprland',
+    'hyprlock',
+    'mako',
+    'swayosd',
+    'walker',
+    'waybar',
+    'wofi',
+]);
+
+// Everything the target lists leave out.
+export function isHiddenApp(key: string): boolean {
+    return ALWAYS_INCLUDED_APPS.has(key) || PLASMA_HIDDEN_APPS.has(key);
+}
 
 // Pretty labels for known templates. Anything not listed falls back to a
 // title-cased version of the key.
@@ -34,7 +51,9 @@ const APP_LABELS: Record<string, string> = {
     hyprland: 'Hyprland',
     hyprlock: 'Hyprlock',
     icons: 'Icons',
+    kde: 'KDE Plasma',
     kitty: 'Kitty',
+    konsole: 'Konsole',
     mako: 'Mako',
     swayosd: 'SwayOSD',
     vencord: 'Vencord',

@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	"aether/internal/omarchy"
+	"aether/internal/plasma"
 	"aether/internal/platform"
 	"aether/internal/wallpaper"
 )
@@ -64,6 +65,9 @@ func ClearTheme() error {
 		log.Printf("Warning: could not delete theme override CSS: %v", err)
 	}
 
+	if plasma.Detected() {
+		return plasma.Restore()
+	}
 	if !IsOmarchyInstalled() {
 		return nil
 	}

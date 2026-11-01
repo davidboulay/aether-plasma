@@ -45,7 +45,7 @@ func main() {
 	}
 
 	if ipc.IsRunning() {
-		fmt.Fprintln(os.Stderr, "Aether is already running. Use IPC commands to control it.")
+		fmt.Fprintln(os.Stderr, "Aether Plasma is already running. Use IPC commands to control it.")
 		os.Exit(1)
 	}
 
@@ -73,7 +73,7 @@ func main() {
 	app.focusTab = focusTab
 
 	err := wails.Run(&options.App{
-		Title:       "Aether",
+		Title:       "Aether Plasma",
 		Width:       900,
 		Height:      700,
 		StartHidden: true,
@@ -93,7 +93,7 @@ func main() {
 			app,
 		},
 		Linux: &wailslinux.Options{
-			ProgramName: "Aether",
+			ProgramName: "aether-plasma",
 			// A non-nil Linux options struct bypasses Wails' GPU-safe default.
 			WebviewGpuPolicy: wailslinux.WebviewGpuPolicyNever,
 		},
@@ -102,7 +102,7 @@ func main() {
 			WebviewIsTransparent: true,
 			WindowIsTranslucent:  false,
 			About: &wailsmac.AboutInfo{
-				Title:   "Aether",
+				Title:   "Aether Plasma",
 				Message: "Desktop Theming Application",
 			},
 		},

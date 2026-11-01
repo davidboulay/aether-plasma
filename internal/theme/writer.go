@@ -14,6 +14,7 @@ import (
 	"aether/internal/color"
 	"aether/internal/icontheme"
 	"aether/internal/omarchy"
+	"aether/internal/plasma"
 	"aether/internal/platform"
 	"aether/internal/template"
 )
@@ -129,9 +130,12 @@ func DefaultApplySettings() Settings {
 
 // ApplyResult is returned by ApplyTheme with the outcome of theme application.
 type ApplyResult struct {
-	Success   bool   `json:"success"`
-	IsOmarchy bool   `json:"isOmarchy"`
-	ThemePath string `json:"themePath"`
+	Success   bool     `json:"success"`
+	IsOmarchy bool     `json:"isOmarchy"`
+	IsPlasma  bool     `json:"isPlasma"`
+	ThemePath string   `json:"themePath"`
+	Applied   []string `json:"applied,omitempty"`
+	Warnings  []string `json:"warnings,omitempty"`
 }
 
 // Writer processes templates from an embed.FS and generates theme files.
@@ -434,7 +438,8 @@ func (w *Writer) ApplyTheme(state *ThemeState, settings Settings) (*ApplyResult,
 	}
 
 	themeDir := platform.ThemeDir()
-	if _, err := prepareThemeDir(themeDir, state); err != nil {
+	wallpaperDest, err := prepareThemeDir(themeDir, state)
+	if err != nil {
 		return &ApplyResult{Success: false, ThemePath: themeDir}, err
 	}
 	if err := w.processTemplates(variables, themeDir, settings, state.AppOverrides, state.ExtendedColors, state.IconTheme); err != nil {
@@ -454,6 +459,21 @@ func (w *Writer) ApplyTheme(state *ThemeState, settings Settings) (*ApplyResult,
 	}
 	if err := template.ProcessCustomApps(themeDir, variables); err != nil {
 		return &ApplyResult{Success: false, ThemePath: themeDir}, fmt.Errorf("process custom apps: %w", err)
+	}
+
+	if plasma.Detected() {
+		res, err := plasma.Apply(plasma.Options{
+			ThemeDir:  themeDir,
+			Wallpaper: wallpaperDest,
+			LightMode: state.LightMode,
+			Include:   settings.includesApp,
+		})
+		result := &ApplyResult{Success: err == nil, IsPlasma: true, ThemePath: themeDir}
+		if res != nil {
+			result.Applied = res.Applied
+			result.Warnings = res.Warnings
+		}
+		return result, err
 	}
 	return &ApplyResult{Success: true, ThemePath: themeDir}, nil
 }
@@ -763,7 +783,7 @@ func (w *Writer) processTemplates(
 
 		outputPath := filepath.Join(outputDir, fileName)
 		appName := getAppNameFromFileName(fileName)
-		if appName != "colors" && !settings.includesApp(appName) && (appName == "icons" || len(appOverrides[appName]) == 0) {
+		if appName != "colors" && appName != "kde" && !settings.includesApp(appName) && (appName == "icons" || len(appOverrides[appName]) == 0) {
 			if err := os.Remove(outputPath); err != nil && !os.IsNotExist(err) {
 				return fmt.Errorf("remove stale template %s: %w", fileName, err)
 			}

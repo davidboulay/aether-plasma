@@ -20,6 +20,7 @@ import (
 	"aether/internal/githubsource"
 	"aether/internal/icontheme"
 	"aether/internal/omarchy"
+	"aether/internal/plasma"
 	"aether/internal/platform"
 	"aether/internal/template"
 	"aether/internal/theme"
@@ -507,6 +508,9 @@ func (a *App) ApplyWallpaperOnly(path string) error {
 	}
 	if err := wallpaper.ValidateImageFile(path); err != nil {
 		return err
+	}
+	if plasma.Detected() {
+		return plasma.SetWallpaper(path)
 	}
 	return omarchy.SetBackground(path)
 }

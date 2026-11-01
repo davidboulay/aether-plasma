@@ -9,7 +9,7 @@
     import {
         SPECIAL_APP_FLAGS,
         SPECIAL_APP_ORDER,
-        ALWAYS_INCLUDED_APPS,
+        isHiddenApp,
         appLabel,
     } from '$lib/constants/apps';
 
@@ -26,11 +26,7 @@
             const result = await GetTemplateColors();
             const all = Object.keys(result || {});
             const rest = all
-                .filter(
-                    k =>
-                        !(k in SPECIAL_APP_FLAGS) &&
-                        !ALWAYS_INCLUDED_APPS.has(k)
-                )
+                .filter(k => !(k in SPECIAL_APP_FLAGS) && !isHiddenApp(k))
                 .sort();
             appList = [...SPECIAL_APP_ORDER, ...rest];
         } catch {

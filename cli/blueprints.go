@@ -164,6 +164,7 @@ func runApplyBlueprint(args []string, templatesFS embed.FS) int {
 	if result.Success {
 		fmt.Printf("Applied blueprint: %s\n", bp.Name)
 	}
+	printPlasmaResult(result)
 	return 0
 }
 

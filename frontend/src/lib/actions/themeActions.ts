@@ -96,7 +96,7 @@ async function runApply(
         updateExisting?: boolean;
         isCurrent?: () => boolean;
     } = {}
-): Promise<{success: boolean; count: number} | null> {
+): Promise<{success: boolean; count: number; warnings: string[]} | null> {
     const signature = getThemeSignature(request);
     await initOmarchyCapabilities();
     const {ApplyTheme, SaveAndApplyTheme} = await import(
@@ -123,7 +123,15 @@ async function runApply(
             request.lightMode
         );
     }
-    return {success: !!result.success, count};
+    const warnings = result.warnings ?? [];
+    return {success: !!result.success, count, warnings};
+}
+
+// Aether Plasma: integrations that could not be applied (e.g. a config the
+// user must edit by hand) come back as warnings; surface them in the toast.
+function warningSuffix(warnings: string[]): string {
+    if (!warnings.length) return '';
+    return ` — ${warnings.length} skipped: ${warnings.join('; ')}`;
 }
 
 export async function applyTheme(): Promise<void> {
@@ -137,7 +145,12 @@ export async function applyTheme(): Promise<void> {
             ? ` with ${result.count} app override${result.count === 1 ? '' : 's'}`
             : '';
         if (result.success) {
-            showToast(`Theme applied${suffix}`);
+            showToast(
+                `Theme applied${suffix}${warningSuffix(result.warnings)}`,
+                {
+                    duration: result.warnings.length ? 8000 : 3000,
+                }
+            );
         } else {
             showToast(`Theme files generated${suffix}`);
         }
@@ -202,7 +215,11 @@ export async function saveAndApplyTheme(
         if (!result?.success) return false;
         saveThemeFolder(name, request.wallpaperPath);
         showToast(
-            updateExisting ? `Applied: ${name}` : `Saved and applied: ${name}`
+            (updateExisting
+                ? `Applied: ${name}`
+                : `Saved and applied: ${name}`) +
+                warningSuffix(result.warnings),
+            {duration: result.warnings.length ? 8000 : 3000}
         );
         return true;
     } catch (e: unknown) {

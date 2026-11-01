@@ -807,7 +807,10 @@ export namespace theme {
 	export class ApplyResult {
 	    success: boolean;
 	    isOmarchy: boolean;
+	    isPlasma: boolean;
 	    themePath: string;
+	    applied?: string[];
+	    warnings?: string[];
 	
 	    static createFrom(source: any = {}) {
 	        return new ApplyResult(source);
@@ -817,7 +820,10 @@ export namespace theme {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.success = source["success"];
 	        this.isOmarchy = source["isOmarchy"];
+	        this.isPlasma = source["isPlasma"];
 	        this.themePath = source["themePath"];
+	        this.applied = source["applied"];
+	        this.warnings = source["warnings"];
 	    }
 	}
 	export class Settings {

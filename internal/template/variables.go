@@ -158,6 +158,10 @@ func BuildVariables(roles ColorRoles, lightMode bool, overrides map[string]strin
 		}
 	}
 
+	// KDE Plasma surfaces are derived after overrides so they follow an
+	// overridden background/foreground/accent, unless set explicitly.
+	addPlasmaVariables(vars)
+
 	return vars
 }
 
@@ -191,4 +195,11 @@ func RecomputeDerived(vars map[string]string, overrides map[string]string) {
 		key := fmt.Sprintf("color%d", i)
 		set(key, vars[name])
 	}
+
+	for _, key := range plasmaVariableKeys {
+		if _, explicit := overrides[key]; !explicit {
+			delete(vars, key)
+		}
+	}
+	addPlasmaVariables(vars)
 }

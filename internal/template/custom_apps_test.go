@@ -25,7 +25,7 @@ func TestProcessCustomApps_NoDir(t *testing.T) {
 
 func TestProcessCustomApps_EmptyDir(t *testing.T) {
 	xdgConfig := t.TempDir()
-	customDir := filepath.Join(xdgConfig, "aether", "custom")
+	customDir := filepath.Join(xdgConfig, "aether-plasma", "custom")
 	if err := os.MkdirAll(customDir, 0755); err != nil {
 		t.Fatal(err)
 	}
@@ -40,7 +40,7 @@ func TestProcessCustomApps_EmptyDir(t *testing.T) {
 
 func TestProcessCustomApps_SkipsFiles(t *testing.T) {
 	xdgConfig := t.TempDir()
-	customDir := filepath.Join(xdgConfig, "aether", "custom")
+	customDir := filepath.Join(xdgConfig, "aether-plasma", "custom")
 	if err := os.MkdirAll(customDir, 0755); err != nil {
 		t.Fatal(err)
 	}
@@ -59,7 +59,7 @@ func TestProcessCustomApps_SkipsFiles(t *testing.T) {
 
 func TestProcessCustomApps_FullWorkflow(t *testing.T) {
 	xdgConfig := t.TempDir()
-	customDir := filepath.Join(xdgConfig, "aether", "custom")
+	customDir := filepath.Join(xdgConfig, "aether-plasma", "custom")
 	appDir := filepath.Join(customDir, "testapp")
 	if err := os.MkdirAll(appDir, 0755); err != nil {
 		t.Fatal(err)
@@ -147,7 +147,7 @@ rgba = {blue.rgba:0.7}
 
 func TestProcessCustomApps_MissingConfigJSON(t *testing.T) {
 	xdgConfig := t.TempDir()
-	customDir := filepath.Join(xdgConfig, "aether", "custom")
+	customDir := filepath.Join(xdgConfig, "aether-plasma", "custom")
 	appDir := filepath.Join(customDir, "noconfigapp")
 	if err := os.MkdirAll(appDir, 0755); err != nil {
 		t.Fatal(err)
@@ -164,7 +164,7 @@ func TestProcessCustomApps_MissingConfigJSON(t *testing.T) {
 
 func TestProcessCustomApps_EmptyTemplateField(t *testing.T) {
 	xdgConfig := t.TempDir()
-	customDir := filepath.Join(xdgConfig, "aether", "custom")
+	customDir := filepath.Join(xdgConfig, "aether-plasma", "custom")
 	appDir := filepath.Join(customDir, "emptytemplate")
 	if err := os.MkdirAll(appDir, 0755); err != nil {
 		t.Fatal(err)
@@ -186,7 +186,7 @@ func TestProcessCustomApps_EmptyTemplateField(t *testing.T) {
 
 func TestProcessCustomApps_MissingTemplateFile(t *testing.T) {
 	xdgConfig := t.TempDir()
-	customDir := filepath.Join(xdgConfig, "aether", "custom")
+	customDir := filepath.Join(xdgConfig, "aether-plasma", "custom")
 	appDir := filepath.Join(customDir, "missingfile")
 	if err := os.MkdirAll(appDir, 0755); err != nil {
 		t.Fatal(err)
@@ -390,7 +390,7 @@ func writeCustomApp(t *testing.T, customDir, name, destination string, hook bool
 
 func TestProcessCustomApps_NoDestination(t *testing.T) {
 	xdgConfig := t.TempDir()
-	customDir := filepath.Join(xdgConfig, "aether", "custom")
+	customDir := filepath.Join(xdgConfig, "aether-plasma", "custom")
 	appDir := filepath.Join(customDir, "nodest")
 	if err := os.MkdirAll(appDir, 0755); err != nil {
 		t.Fatal(err)
@@ -425,7 +425,7 @@ func TestProcessCustomApps_NoDestination(t *testing.T) {
 
 func TestProcessCustomApps_MultipleApps(t *testing.T) {
 	xdgConfig := t.TempDir()
-	customDir := filepath.Join(xdgConfig, "aether", "custom")
+	customDir := filepath.Join(xdgConfig, "aether-plasma", "custom")
 	t.Setenv("XDG_CONFIG_HOME", xdgConfig)
 
 	// Create two custom apps
@@ -461,7 +461,7 @@ func TestProcessCustomApps_MultipleApps(t *testing.T) {
 
 func TestReadCustomOverride_Found(t *testing.T) {
 	xdgConfig := t.TempDir()
-	customDir := filepath.Join(xdgConfig, "aether", "custom")
+	customDir := filepath.Join(xdgConfig, "aether-plasma", "custom")
 	if err := os.MkdirAll(customDir, 0755); err != nil {
 		t.Fatal(err)
 	}
@@ -484,7 +484,7 @@ func TestReadCustomOverride_Found(t *testing.T) {
 
 func TestReadCustomOverride_NotFound(t *testing.T) {
 	xdgConfig := t.TempDir()
-	customDir := filepath.Join(xdgConfig, "aether", "custom")
+	customDir := filepath.Join(xdgConfig, "aether-plasma", "custom")
 	if err := os.MkdirAll(customDir, 0755); err != nil {
 		t.Fatal(err)
 	}
@@ -498,7 +498,7 @@ func TestReadCustomOverride_NotFound(t *testing.T) {
 
 func TestReadCustomOverride_IgnoresDirectories(t *testing.T) {
 	xdgConfig := t.TempDir()
-	customDir := filepath.Join(xdgConfig, "aether", "custom")
+	customDir := filepath.Join(xdgConfig, "aether-plasma", "custom")
 	// Create a directory with the same name as a template file
 	if err := os.MkdirAll(filepath.Join(customDir, "kitty.conf"), 0755); err != nil {
 		t.Fatal(err)

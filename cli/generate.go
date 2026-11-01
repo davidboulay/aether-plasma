@@ -167,6 +167,7 @@ func runGenerate(args []string, templatesFS embed.FS) int {
 		if result.Success {
 			fmt.Println("Theme applied successfully")
 		}
+		printPlasmaResult(result)
 	}
 
 	return 0
@@ -181,4 +182,17 @@ func joinStrings(s []string, sep string) string {
 		result += v
 	}
 	return result
+}
+
+// printPlasmaResult lists what Aether Plasma activated and what it skipped.
+func printPlasmaResult(result *theme.ApplyResult) {
+	if result == nil || !result.IsPlasma {
+		return
+	}
+	if len(result.Applied) > 0 {
+		fmt.Printf("Plasma: %s\n", joinStrings(result.Applied, ", "))
+	}
+	for _, w := range result.Warnings {
+		fmt.Fprintf(os.Stderr, "Skipped: %s\n", w)
+	}
 }
