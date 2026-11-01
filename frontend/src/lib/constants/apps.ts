@@ -31,6 +31,18 @@ export const PLASMA_HIDDEN_APPS = new Set([
     'wofi',
 ]);
 
+// Aether Plasma integrations that are on unless explicitly turned off.
+// Keep in sync with plasmaDefaultApps in internal/theme/writer.go.
+export const DEFAULT_ON_APPS = new Set([
+    'icons',
+    'konsole',
+    'ghostty',
+    'alacritty',
+    'kitty',
+    'foot',
+    'btop',
+]);
+
 // Everything the target lists leave out.
 export function isHiddenApp(key: string): boolean {
     return ALWAYS_INCLUDED_APPS.has(key) || PLASMA_HIDDEN_APPS.has(key);

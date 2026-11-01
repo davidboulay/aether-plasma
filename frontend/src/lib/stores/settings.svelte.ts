@@ -1,5 +1,5 @@
 import type {Settings} from '$lib/types/theme';
-import {SPECIAL_APP_FLAGS} from '$lib/constants/apps';
+import {DEFAULT_ON_APPS, SPECIAL_APP_FLAGS} from '$lib/constants/apps';
 
 const defaults: Settings = {
     wallpaperFolder: '',
@@ -72,13 +72,13 @@ export function updateSettings(partial: Partial<Settings>): void {
 }
 
 export function isAppIncluded(app: string): boolean {
-    if (app === 'icons') return settings.includedApps?.icons !== false;
+    if (DEFAULT_ON_APPS.has(app)) return settings.includedApps?.[app] !== false;
     return !!settings.includedApps?.[app];
 }
 
 export function setAppIncluded(app: string, enabled: boolean): void {
     const current = {...(settings.includedApps ?? {})};
-    if (enabled || app === 'icons') {
+    if (enabled || DEFAULT_ON_APPS.has(app)) {
         current[app] = enabled;
     } else {
         delete current[app];

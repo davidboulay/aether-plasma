@@ -88,10 +88,22 @@ type Settings struct {
 	ExcludedApps         map[string]bool `json:"excludedApps,omitempty"`
 }
 
+// plasmaDefaultApps are Aether Plasma integrations that are on unless the
+// user explicitly turns them off (like icons). Apps that are not installed
+// are skipped by the Plasma backend.
+var plasmaDefaultApps = map[string]bool{
+	"konsole":   true,
+	"ghostty":   true,
+	"alacritty": true,
+	"kitty":     true,
+	"foot":      true,
+	"btop":      true,
+}
+
 // includesApp supports explicit opt-in targets while preserving callers that
 // still use the legacy special flags and exclusion map.
 func (s Settings) includesApp(app string) bool {
-	if app == "icons" {
+	if app == "icons" || plasmaDefaultApps[app] {
 		if enabled, ok := s.IncludedApps[app]; ok {
 			return enabled
 		}

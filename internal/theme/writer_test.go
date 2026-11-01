@@ -260,7 +260,7 @@ func TestProcessTemplatesRemovesDisabledTarget(t *testing.T) {
 	}
 
 	writer := NewWriter(omarchyV4TestTemplates, "testdata/v4")
-	writer.processTemplates(nil, themeDir, Settings{IncludedApps: map[string]bool{}}, nil, nil)
+	writer.processTemplates(nil, themeDir, Settings{IncludedApps: map[string]bool{"kitty": false}}, nil, nil)
 
 	if _, err := os.Stat(stale); !os.IsNotExist(err) {
 		t.Errorf("disabled kitty target was not removed: %v", err)
@@ -604,7 +604,7 @@ func TestStandaloneWriterReturnsGenerationErrors(t *testing.T) {
 		}{
 			{name: "missing templates", wantError: "list templates"},
 			{name: "template write", block: "kitty.conf", wantError: "write processed template kitty.conf", settings: Settings{IncludedApps: map[string]bool{"kitty": true}}},
-			{name: "stale template removal", block: "kitty.conf", wantError: "remove stale template kitty.conf", settings: Settings{IncludedApps: map[string]bool{}}},
+			{name: "stale template removal", block: "kitty.conf", wantError: "remove stale template kitty.conf", settings: Settings{IncludedApps: map[string]bool{"kitty": false}}},
 			{name: "neovim preset", block: "neovim.lua", wantError: "write custom neovim.lua", settings: Settings{IncludeNeovim: true, SelectedNeovimConfig: "preset"}},
 			{name: "light marker creation", block: "light.mode", wantError: "update light mode marker", lightMode: true},
 			{name: "light marker removal", block: "light.mode", wantError: "update light mode marker"},
@@ -997,5 +997,21 @@ func TestReplaceThemeDirRetainsBackupWhenRollbackFails(t *testing.T) {
 	assertWriterTestFile(t, filepath.Join(backups[0], "colors.toml"), "old colors")
 	if !strings.Contains(err.Error(), backups[0]) {
 		t.Fatalf("rollback error does not identify recovery path: %v", err)
+	}
+}
+
+func TestPlasmaAppsDefaultOnInGUISettings(t *testing.T) {
+	gui := Settings{IncludedApps: map[string]bool{}}
+	for _, app := range []string{"ghostty", "konsole", "btop", "icons"} {
+		if !gui.includesApp(app) {
+			t.Errorf("%s should be on by default", app)
+		}
+	}
+	if gui.includesApp("waybar") {
+		t.Error("waybar should stay opt-in")
+	}
+	off := Settings{IncludedApps: map[string]bool{"ghostty": false}}
+	if off.includesApp("ghostty") {
+		t.Error("explicitly disabled ghostty still included")
 	}
 }
