@@ -14,14 +14,14 @@ build:
 # User-local install (no sudo): ~/.local/bin/aether-plasma + desktop entry.
 install: build
 	install -Dm755 build/bin/aether-plasma $(BINDIR)/aether-plasma
-	install -Dm644 dev.davidboulay.aether-plasma.desktop $(APPDIR)/dev.davidboulay.aether-plasma.desktop
+	install -Dm644 aether-plasma.desktop $(APPDIR)/aether-plasma.desktop
 	install -Dm644 assets/aether-icon-512.png $(ICONDIR)/aether-plasma.png
 	-update-desktop-database $(APPDIR) 2>/dev/null
 	-gtk-update-icon-cache -f $(PREFIX)/share/icons/hicolor 2>/dev/null
 	-kbuildsycoca6 2>/dev/null
 
 uninstall:
-	rm -f $(BINDIR)/aether-plasma $(APPDIR)/dev.davidboulay.aether-plasma.desktop $(ICONDIR)/aether-plasma.png
+	rm -f $(BINDIR)/aether-plasma $(APPDIR)/aether-plasma.desktop $(ICONDIR)/aether-plasma.png
 	-update-desktop-database $(APPDIR) 2>/dev/null
 
 update:

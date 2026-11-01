@@ -1,7 +1,7 @@
 {
   "name": "aether",
   "private": true,
-  "version": "3.0.0",
+  "version": "0.1.0",
   "description": "Desktop theme generator - extract colors from wallpapers and apply cohesive themes",
   "type": "module",
   "engines": {

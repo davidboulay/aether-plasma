@@ -7,23 +7,18 @@
     const links: Link[] = [
         {
             label: 'GitHub',
+            url: 'https://github.com/davidboulay/aether-plasma',
+            description: 'Aether Plasma source code and issues',
+        },
+        {
+            label: 'Website',
+            url: 'https://davidboulay.com/apps/aether-plasma/',
+            description: 'Aether Plasma on davidboulay.com',
+        },
+        {
+            label: 'Upstream Aether',
             url: 'https://github.com/omacom/aether',
-            description: 'Source code and issues',
-        },
-        {
-            label: 'Documentation',
-            url: 'https://github.com/omacom/aether/tree/master/docs',
-            description: 'CLI, installation, custom apps, and templates',
-        },
-        {
-            label: 'Releases',
-            url: 'https://github.com/omacom/aether/releases/latest',
-            description: 'Latest release notes and downloads',
-        },
-        {
-            label: 'Omarchy',
-            url: 'https://omarchy.org',
-            description: 'The Linux desktop Aether is built for',
+            description: 'The original Aether for Omarchy',
         },
     ];
     const AUTHOR_URL = 'https://x.com/iamdothash';
@@ -37,15 +32,17 @@
             class="h-[72px] w-[72px] object-contain"
         />
         <div>
-            <h1 class="text-fg-primary text-[24px] font-semibold">Aether</h1>
+            <h1 class="text-fg-primary text-[24px] font-semibold">
+                Aether Plasma
+            </h1>
             <p class="text-fg-dimmed mt-1 font-mono text-[12px] font-medium">
                 v{__APP_VERSION__}
             </p>
         </div>
         <p class="text-fg-secondary text-pretty text-[13px] leading-[1.55]">
-            Aether extracts color palettes from wallpapers and applies cohesive
-            themes across your Linux desktop. Built with Wails, Go, and Svelte
-            5.
+            Aether Plasma extracts color palettes from wallpapers and applies
+            them to KDE Plasma, the lock screen and your terminals. A fork of
+            Aether by Bjarne Øverli, built with Wails, Go, and Svelte 5.
         </p>
         <nav
             class="flex flex-wrap justify-center gap-4 text-[12.5px]"
@@ -61,7 +58,7 @@
             {/each}
         </nav>
         <p class="text-fg-dimmed mt-3 text-[11px]">
-            Built by <button
+            Plasma fork by David Boulay · Aether built by <button
                 type="button"
                 class="text-fg-secondary hover:text-fg-primary underline underline-offset-2 transition-colors"
                 onclick={() => openURL(AUTHOR_URL)}

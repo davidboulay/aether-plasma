@@ -10,7 +10,6 @@
     import SearchIcon from '$lib/components/shared/SearchIcon.svelte';
     import Kbd from '$lib/components/shared/Kbd.svelte';
     import ReleaseIndicator from '$lib/components/layout/ReleaseIndicator.svelte';
-    import aetherLogo from '../../../assets/aether-logo.png';
     import {
         getOmarchyAvailable,
         initOmarchyCapabilities,
@@ -115,8 +114,23 @@
         onclick={() => setActiveTab('editor')}
         title="Editor"
     >
-        <img src={aetherLogo} alt="" class="h-[18px] w-[18px] object-contain" />
-        <span>AETHER</span>
+        <span class="flex items-center whitespace-nowrap">
+            AETHER
+            <span
+                class="text-accent ml-1.5 inline-flex items-center gap-1 text-[9px] tracking-[0.14em]"
+            >
+                <!-- KDE Plasma mark from Simple Icons (CC0) -->
+                <svg
+                    viewBox="0 0 24 24"
+                    class="h-[12px] w-[12px]"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    ><path
+                        d="M6 0c-.831 0-1.5.669-1.5 1.5S5.169 3 6 3s1.5-.669 1.5-1.5S6.831 0 6 0m10.5 0-3 3L18 7.5 13.5 12l3 3 4.5-4.5 3-3zM2.25 9A2.245 2.245 0 0 0 0 11.25a2.245 2.245 0 0 0 2.25 2.25 2.245 2.245 0 0 0 2.25-2.25A2.245 2.245 0 0 0 2.25 9M9 18c-1.662 0-3 1.338-3 3s1.338 3 3 3 3-1.338 3-3-1.338-3-3-3"
+                    /></svg
+                >PLASMA
+            </span>
+        </span>
     </button>
     <div class="bg-border my-3 mr-1 w-px shrink-0" aria-hidden="true"></div>
     <nav

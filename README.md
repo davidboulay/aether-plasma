@@ -4,7 +4,11 @@
 
 # Aether Plasma
 
-A fork of [Aether](https://github.com/omacom/aether) by Bjarne Øverli for **KDE Plasma** (built and tested on CachyOS, Plasma 6, Wayland). Pick a wallpaper, extract a palette, press Apply, and Plasma follows: color scheme, wallpaper, lock screen, and your terminals.
+**Theme KDE Plasma from your wallpaper.** Pick an image, Aether extracts a 16-color palette, you tweak it, press Apply, and your whole desktop follows in a second: Plasma's colors, the wallpaper, the lock screen, Konsole, Ghostty and your other terminals. No logout, no restarting apps.
+
+![Aether Plasma](docs/plasma/screenshot.jpg)
+
+[Aether](https://github.com/omacom/aether) by Bjarne Øverli is the best wallpaper-to-theme tool on Linux, but it is built for [Omarchy](https://omarchy.org) (Hyprland). On any other desktop it writes theme files and stops there. Aether Plasma is a fork that finishes the job on **KDE Plasma 6**: it generates a native KDE color scheme, activates it, and wires the terminals in, as a layer on top of your own configs. Built and used daily on CachyOS (Plasma 6, Wayland).
 
 ## What Apply does on Plasma
 
@@ -13,16 +17,16 @@ A fork of [Aether](https://github.com/omacom/aether) by Bjarne Øverli for **KDE
 | Plasma color scheme | Generates `Aether Plasma` (`~/.local/share/color-schemes/AetherPlasmaA/B.colors`) and activates it with `plasma-apply-colorscheme`. GTK apps follow through Plasma's own GTK sync. | Always |
 | Wallpaper | `plasma-apply-wallpaperimage` (all desktops) | Always |
 | Lock screen | Same image in `kscreenlockerrc` | Always |
-| Icons | Switches to the selected icon theme with `plasma-changeicons`, only if it is installed | Icons toggle |
-| Konsole | `AetherPlasma.colorscheme` set on the default profile (creates an `Aether Plasma` profile if there is none) | Konsole toggle |
-| Ghostty | Managed `config-file` include, live reload via SIGUSR2 | Ghostty toggle |
-| Alacritty | Managed `general.import`, live reload | Alacritty toggle |
-| Kitty | Managed `include`, reload via SIGUSR1 | Kitty toggle |
-| Foot | Managed `include=` | Foot toggle |
-| btop | `~/.config/btop/themes/aether-plasma.theme` + `color_theme`, reload via SIGUSR2 | Btop toggle |
-| VS Code, Zed, Neovim | Upstream Aether integrations | Toggles |
+| Icons | Switches to the selected icon theme with `plasma-changeicons`, only if it is installed | On, can be turned off |
+| Konsole | `AetherPlasma.colorscheme` set on the default profile (creates an `Aether Plasma` profile if there is none) | On, can be turned off |
+| Ghostty | Managed `config-file` include, live reload via SIGUSR2 | On, can be turned off |
+| Alacritty | Managed `general.import`, live reload | On, can be turned off |
+| Kitty | Managed `include`, reload via SIGUSR1 | On, can be turned off |
+| Foot | Managed `include=` | On, can be turned off |
+| btop | `~/.config/btop/themes/aether-plasma.theme` + `color_theme`, reload via SIGUSR2 | On, can be turned off |
+| VS Code, Zed, Neovim | Upstream Aether integrations | Opt-in |
 
-Apps that are not installed are skipped. Hyprland-only targets (Hyprland, Hyprlock, Waybar, Walker, Mako, SwayOSD, Wofi) are hidden in the UI.
+Toggles live in the **Targets** strip at the bottom of the window. Apps that are not installed are skipped. Hyprland-only targets (Hyprland, Hyprlock, Waybar, Walker, Mako, SwayOSD, Wofi) are hidden in the UI.
 
 **Layered, not invasive.** Aether Plasma only writes its own files plus a marked block in app configs:
 
@@ -56,6 +60,29 @@ aether-plasma --generate ~/Pictures/wall.jpg            # extract + apply to Pla
 aether-plasma --generate ~/Pictures/wall.jpg --light-mode
 aether-plasma --generate ~/Pictures/wall.jpg --no-apply --output /tmp/theme
 ```
+
+## Roadmap
+
+**Done (0.1, 2026-11-01)**
+- Native KDE color scheme generated from the palette, light and dark, activated live
+- Desktop + lock screen wallpaper, icon theme
+- Konsole, Ghostty, Alacritty, Kitty, Foot and btop, on by default, reloaded live where the app supports it
+- Own folders and binary, so it installs next to stock Aether; Hyprland-only targets hidden
+
+**Next**
+- **Packaging**: an AUR package (`aether-plasma-bin`) and prebuilt binaries on GitHub Releases, so installing doesn't need Go and Wails
+- **Running Konsole windows**: recolor open sessions over D-Bus instead of only new ones
+- **Accent color**: set Plasma's accent from the palette so it also reaches Breeze widgets that ignore the scheme's selection color
+- **Firefox and Chromium**: a theme that follows the palette without root-only browser policies
+- **Kvantum**: generate a matching Kvantum theme for people who use it instead of Breeze
+- **Plasma 6 day/night**: let Plasma's automatic light/dark switch pick the light or dark variant of the current theme
+
+**Later**
+- SDDM login screen (needs root, so an opt-in helper)
+- Per-screen wallpapers
+- Its own icon
+
+**Staying close to upstream**: Aether Plasma tracks [omacom/aether](https://github.com/omacom/aether) and merges new releases, so palette, editor and wallpaper improvements land here too. Plasma code stays in `internal/plasma` and two templates to keep merges small.
 
 ## Credits
 

@@ -87,6 +87,13 @@ func Apply(opts Options) (*Result, error) {
 	}
 	res.ok("color scheme")
 
+	switch changed, err := ensureSchemeFollowingStyle(); {
+	case err != nil:
+		res.warn("panel and menus: %v", err)
+	case changed:
+		res.ok("Plasma style (Breeze, follows the scheme)")
+	}
+
 	if opts.Wallpaper != "" {
 		if err := applyWallpaper(opts.Wallpaper); err != nil {
 			res.warn("wallpaper: %v", err)
@@ -142,7 +149,13 @@ func Restore() error {
 	for _, name := range []string{schemeA, schemeB} {
 		_ = os.Remove(filepath.Join(colorSchemesDir(), name+".colors"))
 	}
+	if state.PreviousStyle != "" {
+		if _, err := platform.RunSync("plasma-apply-desktoptheme", state.PreviousStyle); err != nil {
+			log.Printf("aether-plasma: restore Plasma style %q: %v", state.PreviousStyle, err)
+		}
+	}
 	state.PreviousScheme = ""
+	state.PreviousStyle = ""
 	return saveState(state)
 }
 
@@ -173,6 +186,7 @@ func konsoleDir() string      { return filepath.Join(dataHome(), "konsole") }
 
 type state struct {
 	PreviousScheme string `json:"previousScheme"`
+	PreviousStyle  string `json:"previousStyle,omitempty"`
 }
 
 func statePath() string { return filepath.Join(platform.ConfigDir(), "plasma-state.json") }
@@ -250,6 +264,37 @@ func applyColorScheme(themeDir string) error {
 		log.Printf("aether-plasma: could not remove stale scheme: %v", err)
 	}
 	return nil
+}
+
+// ---------------------------------------------------------------------------
+// Plasma style (panel, menus, widgets)
+
+// fixedBreezeStyles have hard-coded colors and ignore the color scheme;
+// "default" (Breeze) draws the panel and menus from the active scheme.
+var fixedBreezeStyles = map[string]bool{"breeze-dark": true, "breeze-light": true}
+
+// ensureSchemeFollowingStyle switches Breeze Dark/Light to Breeze so the
+// panel and menus follow the generated scheme. It remembers the previous
+// style for Restore. Third-party styles are left alone with a warning.
+func ensureSchemeFollowingStyle() (bool, error) {
+	current := readConfig("plasmarc", []string{"Theme"}, "name")
+	if current == "" || current == "default" {
+		return false, nil
+	}
+	if !fixedBreezeStyles[current] {
+		return false, fmt.Errorf("Plasma style %q may use its own colors; choose Breeze in System Settings → Plasma Style for the panel to follow the theme", current)
+	}
+	s := loadState()
+	if s.PreviousStyle == "" {
+		s.PreviousStyle = current
+		if err := saveState(s); err != nil {
+			log.Printf("aether-plasma: could not record previous style: %v", err)
+		}
+	}
+	if _, err := platform.RunSync("plasma-apply-desktoptheme", "default"); err != nil {
+		return false, err
+	}
+	return true, nil
 }
 
 // ---------------------------------------------------------------------------
