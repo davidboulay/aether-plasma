@@ -65,12 +65,14 @@ aether-plasma --generate ~/Pictures/wall.jpg --no-apply --output /tmp/theme
 
 ## Roadmap
 
+**Done (0.2, 2026-11-03)**
+- **Open Aether Plasma** from the desktop right-click menu (own wallpaper plugin, installed and activated by `make install`)
+
 **Done (0.1, 2026-11-01)**
 - Native KDE color scheme generated from the palette, light and dark, activated live
 - Desktop + lock screen wallpaper, icon theme
 - Konsole, Ghostty, Alacritty, Kitty, Foot and btop, on by default, reloaded live where the app supports it
 - Own folders and binary, so it installs next to stock Aether; Hyprland-only targets hidden
-- **Open Aether Plasma** from the desktop right-click menu (own wallpaper plugin, installed and activated by `make install`)
 
 **Next**
 - **Packaging**: an AUR package (`aether-plasma-bin`) and prebuilt binaries on GitHub Releases, so installing doesn't need Go and Wails
