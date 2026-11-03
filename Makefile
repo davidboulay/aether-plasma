@@ -5,6 +5,7 @@ PREFIX ?= $(HOME)/.local
 BINDIR := $(PREFIX)/bin
 APPDIR := $(PREFIX)/share/applications
 ICONDIR := $(PREFIX)/share/icons/hicolor/512x512/apps
+WALLPAPERDIR := $(PREFIX)/share/plasma/wallpapers/io.github.davidboulay.aether-plasma-wallpaper
 VERSION := $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
 LDFLAGS := -X 'aether/internal/update.packageUpdateCommand=make -C $(CURDIR) update' -X 'aether/cli.Version=$(VERSION)'
 
@@ -19,8 +20,14 @@ install: build
 	-update-desktop-database $(APPDIR) 2>/dev/null
 	-gtk-update-icon-cache -f $(PREFIX)/share/icons/hicolor 2>/dev/null
 	-kbuildsycoca6 2>/dev/null
+	rm -rf $(WALLPAPERDIR)
+	install -Dm644 contrib/plasma-wallpaper/metadata.json $(WALLPAPERDIR)/metadata.json
+	cp -r contrib/plasma-wallpaper/contents $(WALLPAPERDIR)/
+	-contrib/plasma-wallpaper/activate.sh on
 
 uninstall:
+	-contrib/plasma-wallpaper/activate.sh off
+	rm -rf $(WALLPAPERDIR)
 	rm -f $(BINDIR)/aether-plasma $(APPDIR)/aether-plasma.desktop $(ICONDIR)/aether-plasma.png
 	-update-desktop-database $(APPDIR) 2>/dev/null
 
