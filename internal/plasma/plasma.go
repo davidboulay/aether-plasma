@@ -312,8 +312,13 @@ func applyWallpaper(path string) error {
 	if _, err := os.Stat(abs); err != nil {
 		return err
 	}
-	if _, err := platform.RunSync("plasma-apply-wallpaperimage", abs); err != nil {
-		return err
+	// With the Aether wallpaper plugin installed, set the image through it so
+	// the desktop keeps its "Open Aether Plasma" menu item;
+	// plasma-apply-wallpaperimage would switch it back to the stock plugin.
+	if !wallpaperPluginInstalled() || applyPluginWallpaper(abs) != nil {
+		if _, err := platform.RunSync("plasma-apply-wallpaperimage", abs); err != nil {
+			return err
+		}
 	}
 	// Lock screen uses the same image.
 	groups := []string{"Greeter", "Wallpaper", "org.kde.image", "General"}
@@ -327,16 +332,19 @@ func applyWallpaper(path string) error {
 // ---------------------------------------------------------------------------
 // icons
 
+func xdgDataDirs() string {
+	if d := os.Getenv("XDG_DATA_DIRS"); d != "" {
+		return d
+	}
+	return "/usr/local/share:/usr/share"
+}
+
 func iconThemeInstalled(name string) bool {
 	dirs := []string{
 		filepath.Join(dataHome(), "icons"),
 		filepath.Join(homeDir(), ".icons"),
 	}
-	dataDirs := os.Getenv("XDG_DATA_DIRS")
-	if dataDirs == "" {
-		dataDirs = "/usr/local/share:/usr/share"
-	}
-	for _, d := range strings.Split(dataDirs, ":") {
+	for _, d := range strings.Split(xdgDataDirs(), ":") {
 		if d != "" {
 			dirs = append(dirs, filepath.Join(d, "icons"))
 		}

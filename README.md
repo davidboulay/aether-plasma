@@ -51,6 +51,8 @@ git clone https://github.com/davidboulay/aether-plasma.git
 cd aether-plasma && make install   # → ~/.local/bin/aether-plasma + app launcher entry
 ```
 
+`make install` also installs the **Aether Plasma** wallpaper plugin and switches your desktops to it, keeping the current image. It adds **Open Aether Plasma** (and **Open Wallpaper Image**) to the desktop right-click menu. Plasma has no other way for an app to add an item there. Aether Plasma then sets wallpapers through the plugin. To go back to Plasma's Image wallpaper, run `contrib/plasma-wallpaper/activate.sh off` or pick *Image* in *Desktop and Wallpaper*. Aether then falls back to it on its own. The plugin has no slideshow.
+
 `make update` pulls and reinstalls; `make uninstall` removes it.
 
 ## CLI
@@ -68,6 +70,7 @@ aether-plasma --generate ~/Pictures/wall.jpg --no-apply --output /tmp/theme
 - Desktop + lock screen wallpaper, icon theme
 - Konsole, Ghostty, Alacritty, Kitty, Foot and btop, on by default, reloaded live where the app supports it
 - Own folders and binary, so it installs next to stock Aether; Hyprland-only targets hidden
+- **Open Aether Plasma** from the desktop right-click menu (own wallpaper plugin, installed and activated by `make install`)
 
 **Next**
 - **Packaging**: an AUR package (`aether-plasma-bin`) and prebuilt binaries on GitHub Releases, so installing doesn't need Go and Wails

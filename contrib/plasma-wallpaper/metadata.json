@@ -1,0 +1,17 @@
+{
+    "KPackageStructure": "Plasma/Wallpaper",
+    "KPlugin": {
+        "Id": "io.github.davidboulay.aether-plasma-wallpaper",
+        "Name": "Aether Plasma",
+        "Description": "Shows the Aether Plasma wallpaper and opens Aether Plasma from the desktop right-click menu",
+        "Icon": "aether-plasma",
+        "License": "MIT",
+        "Authors": [
+            {
+                "Name": "David Boulay"
+            }
+        ],
+        "Version": "1.0",
+        "Website": "https://github.com/davidboulay/aether-plasma"
+    }
+}
